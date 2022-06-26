@@ -52,6 +52,16 @@ public enum TypesOfOrganisms {
         return setOfOrganisms;
     }
 
+    public static HashSet<Class<?>> getTypesOfCarnivores() {
+        HashSet<Class<?>> setOfCarnivores = new HashSet<>();
+        for (TypesOfOrganisms organism : TypesOfOrganisms.values()) {
+            if (organism.getType() instanceof Carnivore.class) {
+                setOfCarnivores.add(organism.getType());
+            }
+        }
+        return setOfCarnivores;
+    }
+
     @Override
     public String toString() {
         return "TypesOfOrganisms{" +

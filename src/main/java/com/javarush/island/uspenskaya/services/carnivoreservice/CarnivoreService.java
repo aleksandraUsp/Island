@@ -2,27 +2,56 @@ package com.javarush.island.uspenskaya.services.carnivoreservice;
 
 import com.javarush.island.uspenskaya.entities.field.Cell;
 import com.javarush.island.uspenskaya.entities.organizms.Organism;
+import com.javarush.island.uspenskaya.entities.organizms.Plant;
 import com.javarush.island.uspenskaya.entities.organizms.carnivore.Carnivore;
+import com.javarush.island.uspenskaya.interfaces.organismactions.carnivoreinterface.CarnivoreActions;
+import com.javarush.island.uspenskaya.repository.FactoryLife;
+import com.javarush.island.uspenskaya.repository.TypesOfOrganisms;
 import com.javarush.island.uspenskaya.util.Configger;
 import com.javarush.island.uspenskaya.util.Randomizer;
 import com.javarush.island.uspenskaya.util.Sleeper;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-public abstract class CarnivoreService extends AnimalService {
+public abstract class CarnivoreService implements CarnivoreActions {
 
-    private final Carnivore carnivore;
-    private final Cell cell;
-
-    public CarnivoreService(Carnivore carnivore, Cell cell) {
-        this.carnivore = carnivore;
-        this.cell = cell;
+    public CarnivoreService() {
     }
 
+    @Override
+    public void initialize(Cell[][] field) {
+        Cell cell;
 
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                cell = field[i][j];
 
+                qualityOfPlant = Randomizer.getRnd(0, TypesOfOrganisms.PLANT.getMaxQuality());
+                ArrayList<Plant> listOfCellPlant = FactoryLife.factoryPlant(qualityOfPlant);
+                cell.setListOfPlant(listOfCellPlant);
+            }
+        }
+    }
 
     @Override
+    public void reproduct(Cell[][] field, Organism organism) {
+
+    }
+
+    @Override
+    public Map<Class<?>, ArrayList<?>> eat(Map<Organism, Integer> organisms) {
+        return null;
+    }
+
+    @Override
+    public void move() {
+
+    }
+}
+
+
+/*    @Override
     public void run() {
         eat(cell.herbivores);
         int timeout= Randomizer.getRnd(Configger.getMinTimeout(), Configger.getMaxTimeout());

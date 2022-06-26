@@ -5,9 +5,10 @@ import com.javarush.island.uspenskaya.entities.organizms.Plant;
 import com.javarush.island.uspenskaya.util.Randomizer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
-public class FactoryLife {
+public class FactoryLife<TODO> {
 
     public FactoryLife() {
     }
