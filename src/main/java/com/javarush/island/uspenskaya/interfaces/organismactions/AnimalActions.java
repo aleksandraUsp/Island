@@ -5,7 +5,8 @@ import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.interfaces.simpleinterface.Eatable;
 import com.javarush.island.uspenskaya.interfaces.simpleinterface.Movable;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
 import java.util.Map;
 
 public interface AnimalActions extends OrganismActions, Eatable, Movable {
@@ -13,10 +14,10 @@ public interface AnimalActions extends OrganismActions, Eatable, Movable {
     void initialize(Cell[][] field);
 
     @Override
-    void reproduct(Cell[][] field, Organism organism);
+    void reproduct(Cell[][] field);
 
     @Override
-    Map<Class<?>, ArrayList<?>> eat(Map<Organism, Integer> organisms);
+    Map<Class<?>, HashSet<Organism>> eat(Map<Organism, Integer> organisms);
 
     @Override
     void move();

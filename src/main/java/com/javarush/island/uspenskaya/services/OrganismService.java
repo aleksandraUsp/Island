@@ -14,7 +14,7 @@ public abstract class OrganismService implements OrganismActions {
     }
 
     @Override
-    public void reproduct(Cell[][] field, Organism organism) {
+    public void reproduct(Cell[][] field) {
 
     }
 }

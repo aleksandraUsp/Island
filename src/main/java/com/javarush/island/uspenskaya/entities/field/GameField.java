@@ -1,19 +1,21 @@
 package com.javarush.island.uspenskaya.entities.field;
 
-import com.javarush.island.uspenskaya.entities.field.Cell;
 
 public class GameField {
-    private int row;
-    private int column;
-    private Cell[][]field;   //100x20
+    private final Cell[][]field;   //100x20
 
 
     public GameField(int row, int column) {
-        this.row = row;
-        this.column = column;
-        field= new Cell[row][column];
+        this.field= new Cell[row][column];
         initialize();
     }
+
+    public Cell[][] getField() {
+        return field;
+    }
+    public int getRows() {return field.length;}
+
+    public int getColumns(){return field[0].length;}
 
     public void initialize(){
         for (int i = 0; i < field.length; i++) {
@@ -25,34 +27,12 @@ public class GameField {
         }
     }
 
-    public int getRow() {
-        return row;
-    }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public Cell[][] getField() {
-        return field;
-    }
-
-    public void setField(Cell[][] field) {
-        this.field = field;
-    }
 
     public void print(){
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
-                System.out.print(this.field);
+                System.out.print(field[i][j]);
             }
             System.out.println();
 

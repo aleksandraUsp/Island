@@ -21,7 +21,7 @@ public class FactoryEtalonOrganisms {
             double mass = 0;
             int speed = 0;
             int maxQuality = 0;
-            double saturation = 0;
+            double saturation = 0D;
             String icon = null;
             if (type.isAnnotationPresent(Setting.class)) {
                 Setting setting = type.getAnnotation(Setting.class);
@@ -30,7 +30,9 @@ public class FactoryEtalonOrganisms {
                 mass = Randomizer.getRndDouble(setting.mass() / 2, setting.mass());
                 speed = setting.speed();
                 maxQuality = setting.maxQuality();
-                saturation = Randomizer.getRndDouble(0, setting.saturation());
+                if (setting.saturation()!=0){
+                saturation = Randomizer.getRndDouble(0, setting.saturation());}
+                else {saturation=0;}
                 icon = setting.icon();
             }
             Organism organism = generatePrototype(type, mass, speed, maxQuality, saturation, icon);

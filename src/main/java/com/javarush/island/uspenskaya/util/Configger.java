@@ -7,6 +7,8 @@ public class Configger {
     private static double  valueOfMassForDeath = 0.5; // коэф.снижения массы тела, при кот. животные умирают
     private static int row=10;
     private static int column=10;
+    private static long initialDelay=2;
+    private static long period=3;
 
 
 
@@ -48,5 +50,21 @@ public class Configger {
 
     public static void setColumn(int column) {
         Configger.column = column;
+    }
+
+    public static long getInitialDelay() {
+        return initialDelay;
+    }
+
+    public static void setInitialDelay(long initialDelay) {
+        Configger.initialDelay = initialDelay;
+    }
+
+    public static long getPeriod() {
+        return period;
+    }
+
+    public static void setPeriod(long period) {
+        Configger.period = period;
     }
 }

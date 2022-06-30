@@ -1,44 +1,47 @@
 package com.javarush.island.uspenskaya.entities.field;
 
+import com.javarush.island.uspenskaya.entities.organizms.Animal;
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
-import com.javarush.island.uspenskaya.entities.organizms.carnivore.Carnivore;
-import com.javarush.island.uspenskaya.entities.organizms.herbivore.Herbivore;
 import java.util.*;
 
 
 public class Cell  {
-    private Map<Class<Herbivore>, Queue<Herbivore>> herbivores;
-    private Map<Class<Carnivore>, Queue<Carnivore>> carnivores;  // <carnivore,quality>
-    private ArrayList<Plant> listOfPlant;
+    int row, column;
+    private HashMap<Class<?>, HashSet<Organism>> herbivores;
+    private HashMap<Class<?>, HashSet<Organism>> carnivores;  // <carnivore,quality>
+    private HashSet<Plant> listOfPlant;
     private volatile int qualityOfPlant;
     public Cell(int row, int column) {
-        herbivores = new HashMap<Class<Herbivore>, Queue<Herbivore>>();
-        carnivores = new HashMap<Class<Carnivore>, Queue<Carnivore>>();
-        listOfPlant = new ArrayList<>();
+        herbivores = new HashMap<>();
+        carnivores = new HashMap<>();
+        listOfPlant = new HashSet<>();
+        this.row=row;
+        this.column=column;
 
     }
 
-    public Map<Class<Herbivore>, Queue<Herbivore>> getHerbivores() {
+    public HashMap<Class<?>, HashSet<Organism>> getHerbivores() {
         return herbivores;
     }
 
-    public void setHerbivores(Map<Class<Herbivore>, Queue<Herbivore>> herbivores) {
+    public void setHerbivores(HashMap<Class<?>, HashSet<Organism>> herbivores) {
         this.herbivores = herbivores;
     }
 
-    public Map<Class<Carnivore>, Queue<Carnivore>> getCarnivores() {
+    public HashMap<Class<?>, HashSet<Organism>> getCarnivores() {
         return carnivores;
     }
 
-    public void setCarnivores(Map<Class<Carnivore>, Queue<Carnivore>> carnivores) {
+    public void setCarnivores(HashMap<Class<?>, HashSet<Organism>> carnivores) {
         this.carnivores = carnivores;
     }
 
-    public ArrayList<Plant> getListOfPlant() {
+    public HashSet<Plant> getListOfPlant() {
         return listOfPlant;
     }
 
-    public void setListOfPlant(ArrayList<Plant> listOfPlant) {
+    public void setListOfPlant(HashSet<Plant> listOfPlant) {
         this.listOfPlant = listOfPlant;
     }
 

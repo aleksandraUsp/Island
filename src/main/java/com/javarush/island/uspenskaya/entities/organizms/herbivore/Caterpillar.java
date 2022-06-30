@@ -2,7 +2,6 @@ package com.javarush.island.uspenskaya.entities.organizms.herbivore;
 
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
 import com.javarush.island.uspenskaya.util.Setting;
-
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
