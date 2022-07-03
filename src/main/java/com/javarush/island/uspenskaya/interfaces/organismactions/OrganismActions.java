@@ -6,7 +6,7 @@ import com.javarush.island.uspenskaya.interfaces.simpleinterface.Reproducible;
 
 public interface OrganismActions extends Initializable, Reproducible {
     @Override
-    void initialize(Cell[][] field);
+    void initialize();
 
     @Override
     void reproduct(Cell[][] field);

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface AnimalActions extends OrganismActions, Eatable, Movable {
     @Override
-    void initialize(Cell[][] field);
+    void initialize();
 
     @Override
     void reproduct(Cell[][] field);

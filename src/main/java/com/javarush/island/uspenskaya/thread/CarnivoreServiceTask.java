@@ -1,6 +1,6 @@
 package com.javarush.island.uspenskaya.thread;
 
-import com.javarush.island.uspenskaya.entities.field.Game;
+import com.javarush.island.uspenskaya.entities.field.GameField;
 import com.javarush.island.uspenskaya.exeption.IslandException;
 import com.javarush.island.uspenskaya.services.CarnivoreService;
 
@@ -8,20 +8,20 @@ import com.javarush.island.uspenskaya.services.CarnivoreService;
 import java.util.concurrent.Callable;
 
 public class CarnivoreServiceTask implements Callable<Integer> {
-    Game game;
+    GameField gameField;
     CarnivoreService carnivoreService;
 
 
-    public CarnivoreServiceTask(Game game, CarnivoreService carnivoreService) {
-        this.game=game;
-        this.carnivoreService = carnivoreService;
+    public CarnivoreServiceTask(GameField gameField) {
+        this.gameField=gameField;
+        this.carnivoreService = gameField.getCarnivoreService();
     }
 
     @Override
     public Integer call() {
         int isGood = 1;
         try {
-            carnivoreService.reproduct(game.getGameField().getField());
+            carnivoreService.reproduct(gameField.getField());
         } catch (Exception e) {
             throw new IslandException("CarnivoreService isn't good" + e);
         }

@@ -1,5 +1,6 @@
 package com.javarush.island.uspenskaya.entities.organizms.herbivore;
 
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
 import com.javarush.island.uspenskaya.util.Setting;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class Caterpillar extends Herbivore {
         ration.put(Duck.class, 0);
         ration.put(Plant.class, 100);
         return ration;
+    }
+
+    @Override
+    public Organism clone() {
+        return new Caterpillar(this.getMass(), this.getSpeed(), this.getMaxQuality(), this.getSaturation(), this.getIcon());
     }
 
     @Override

@@ -10,7 +10,7 @@ public abstract class OrganismService implements OrganismActions {
     }
 
     @Override
-    public void initialize(Cell[][] field) {
+    public void initialize() {
     }
 
     @Override

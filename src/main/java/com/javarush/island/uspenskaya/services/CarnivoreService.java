@@ -17,7 +17,7 @@ public class CarnivoreService extends AnimalService {
     }
 
     @Override
-    public void initialize(Cell[][] field) {
+    public void initialize() {
         Cell cell;
         HashSet<Class<?>> carnivoresTypes =TypesOfOrganisms.getTypesOfCarnivores();
 
@@ -56,10 +56,13 @@ public class CarnivoreService extends AnimalService {
                         qualityOfAddAnimal = Randomizer.getRnd(0, bandOfAnimal);
                         HashSet<Organism> listOfAddCarnivoresThisType = FactoryLife.factoryOrganism(qualityOfAddAnimal, typeOfCarnivores);
 //TODO разделить на чтение и запись!
-                        boolean isAdded = listOfCarnivoresThisType.addAll(listOfAddCarnivoresThisType);
+                        listOfCarnivoresThisType.addAll(listOfAddCarnivoresThisType);
+                        entry.setValue(listOfCarnivoresThisType);
+                        /*
+                        boolean isAdded =
                         if (isAdded) {
                             entry.setValue(listOfCarnivoresThisType);
-                        } else System.out.println(typeOfCarnivores + "didn't reproduct");
+                        } else System.out.println(typeOfCarnivores + " didn't reproduct");*/
                     }
                 }
             }

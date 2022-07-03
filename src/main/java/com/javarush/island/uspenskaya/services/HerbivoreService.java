@@ -8,7 +8,7 @@ import com.javarush.island.uspenskaya.repository.TypesOfOrganisms;
 import com.javarush.island.uspenskaya.util.Randomizer;
 
 import java.util.*;
-import java.util.concurrent.Callable;
+
 
 public class HerbivoreService extends AnimalService {
     HashSet<Class<?>> herbivoresTypes = TypesOfOrganisms.getTypesOfHerbivores();
@@ -19,17 +19,17 @@ public class HerbivoreService extends AnimalService {
     }
 
     @Override
-    public void initialize(Cell[][] field) {
+    public void initialize() {
         Cell cell;
        for (int i = field.length-1; i >=0 ; i--) {
             for (int j = field[i].length-1; j >=0; j--) {
                 cell = field[i][j];
                 HashMap<Class<?>, HashSet<Organism>> herbivores=new HashMap<>();
                 for(Class<?> typeOfHerbivores:herbivoresTypes){
-                    HashSet<Organism> listOfCarnivoresThisType= FactoryLife.factoryOrganism(typeOfHerbivores);
-                    herbivores.put(typeOfHerbivores,listOfCarnivoresThisType);
+                    HashSet<Organism> listOfHerbivoresThisType= FactoryLife.factoryOrganism(typeOfHerbivores);
+                    herbivores.put(typeOfHerbivores,listOfHerbivoresThisType);
                 }
-                cell.setCarnivores(herbivores);
+                cell.setHerbivores(herbivores);
             }
         }
     }
@@ -58,10 +58,8 @@ public class HerbivoreService extends AnimalService {
                         qualityOfAddAnimal = Randomizer.getRnd(0, bandOfAnimal);
                         HashSet<Organism> listOfAddHerbivoresThisType = FactoryLife.factoryOrganism(qualityOfAddAnimal, typeOfHerbivores);
 //TODO разделить на чтение и запись!
-                        boolean isAdded = listOfHerbivoresThisType.addAll(listOfAddHerbivoresThisType);
-                        if (isAdded) {
-                            entry.setValue(listOfHerbivoresThisType);
-                        } else System.out.println(typeOfHerbivores + "didn't reproduct");
+                        listOfHerbivoresThisType.addAll(listOfAddHerbivoresThisType);
+                        entry.setValue(listOfHerbivoresThisType);
                     }
                 }
             }
@@ -70,6 +68,39 @@ public class HerbivoreService extends AnimalService {
 
     @Override
     public Map<Class<?>, HashSet<Organism>> eat(Map<Organism, Integer> organisms) {
+        Cell cell;
+        String typeHerbivores;
+        int qualityOfAnimal;
+        /*
+        for (int i = field.length-1; i >=0 ; i--) {
+            for (int j = field[i].length-1; j >=0; j--) {
+                cell = field[i][j];
+                Map<Class<?>, HashSet<Organism>> herbivores = cell.getHerbivores();
+                synchronized (cell) {
+                for (Map.Entry<Class<?>, HashSet<Organism>> entry : herbivores.entrySet()) {
+                    Class<?> classOfHerbivores = entry.getKey();
+                    typeHerbivores=classOfHerbivores.getSimpleName();
+                    HashSet<Organism> listOfHerbivoresThisType = entry.getValue();
+                    qualityOfAnimal = listOfHerbivoresThisType.size();
+                    TypesOfOrganisms type = TypesOfOrganisms.valueOf(classOfHerbivores
+                            .getSimpleName()
+                            .toUpperCase(Locale.ROOT));
+                    for (Organism organism:listOfHerbivoresThisType) {
+                        type.getClass();
+                        if(organism instanceof ){
+                            (classOfHerbivores.getSimpleName())organism
+                        }
+                        double mass =organism.getMass();
+                        Map<Class<?>, Integer>map = organism.getRation()
+                    }
+
+                    }
+
+                }
+                }
+            }
+            
+         */
         return super.eat(organisms);
     }
 

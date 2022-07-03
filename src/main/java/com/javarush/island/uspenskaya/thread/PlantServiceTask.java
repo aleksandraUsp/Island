@@ -11,20 +11,20 @@ import java.util.concurrent.Callable;
 
 
 public class PlantServiceTask implements Callable<Integer> {
-    Game game;
+    GameField gameField;
     PlantService plantService;
 
 
-    public PlantServiceTask(Game game, PlantService plantService) {
-        this.game=game;
-        this.plantService = plantService;
+    public PlantServiceTask(GameField gameField) {
+        this.gameField=gameField;
+        this.plantService = gameField.getPlantService();
     }
 
     @Override
     public Integer call() {
         int isGood = 1;
         try {
-            plantService.reproduct(game.getGameField().getField());
+            plantService.reproduct(gameField.getField());
         } catch (Exception e) {
             throw new IslandException("PlantService isn't good" + e);
         }

@@ -2,12 +2,13 @@ package com.javarush.island.uspenskaya.services;
 
 import com.javarush.island.uspenskaya.entities.field.Cell;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
-import com.javarush.island.uspenskaya.exeption.IslandException;
 import com.javarush.island.uspenskaya.repository.FactoryLife;
 import com.javarush.island.uspenskaya.repository.TypesOfOrganisms;
 import com.javarush.island.uspenskaya.util.Randomizer;
+
+
 import java.util.HashSet;
-import java.util.concurrent.Callable;
+
 
 
 public class PlantService extends OrganismService {
@@ -18,7 +19,7 @@ public class PlantService extends OrganismService {
     }
 
     @Override
-    public void initialize(Cell[][] field) {
+    public void initialize() {
         Cell cell;
         int qualityOfPlant;
 

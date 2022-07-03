@@ -4,5 +4,5 @@ import com.javarush.island.uspenskaya.entities.field.Cell;
 
 
 public interface Initializable {
-    void initialize(Cell[][] field);
+    void initialize();
 }

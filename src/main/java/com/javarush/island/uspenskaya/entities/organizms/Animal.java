@@ -41,10 +41,10 @@ public abstract class Animal extends Organism {
         return saturation;
     }
 
-
-
-
-
+    @Override
+    public Organism clone() {
+        return super.clone();
+    }
 }
 
 

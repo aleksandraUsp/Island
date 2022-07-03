@@ -7,11 +7,11 @@ public class Day {
     private final String name;
 
     public Day() {
-        this.name = "Day"+number.getAndIncrement();
+        this.name = "Day"+number;
     }
 
     public String getName() {
-        return name;
+        return "Day"+number.getAndIncrement();
     }
 
     @Override

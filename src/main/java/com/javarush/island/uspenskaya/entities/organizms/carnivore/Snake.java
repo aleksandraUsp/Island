@@ -1,11 +1,13 @@
 package com.javarush.island.uspenskaya.entities.organizms.carnivore;
 
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.util.Setting;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Setting(mass=15, speed= 1,maxQuality=30,saturation=3, icon="\uD83D\uDC0D")
+
 public class Snake extends Carnivore {
     private final String name;
     private final AtomicInteger number=new AtomicInteger(1);
@@ -62,6 +64,11 @@ public class Snake extends Carnivore {
     @Override
     public String getIcon() {
         return super.getIcon();
+    }
+
+    @Override
+    public Organism clone() {
+        return new Snake(this.getMass(), this.getSpeed(), this.getMaxQuality(), this.getSaturation(), this.getIcon());
     }
 
     public String toString() {

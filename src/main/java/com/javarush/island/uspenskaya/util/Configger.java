@@ -8,7 +8,8 @@ public class Configger {
     private static int row=10;
     private static int column=10;
     private static long initialDelay=2;
-    private static long period=3;
+    private static long period=10;
+    private static int consoleCellWith = 3;
 
 
 
@@ -64,7 +65,13 @@ public class Configger {
         return period;
     }
 
+
     public static void setPeriod(long period) {
         Configger.period = period;
     }
+
+    public static int getConsoleCellWith(){
+        return consoleCellWith;
+    }
+
 }

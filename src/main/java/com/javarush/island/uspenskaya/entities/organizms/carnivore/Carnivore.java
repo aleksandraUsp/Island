@@ -1,6 +1,8 @@
 package com.javarush.island.uspenskaya.entities.organizms.carnivore;
 
 import com.javarush.island.uspenskaya.entities.organizms.Animal;
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +61,11 @@ public abstract class Carnivore extends Animal /*хищник*/ {
     @Override
     public String getIcon() {
         return super.getIcon();
+    }
+
+    @Override
+    public Organism clone() {
+        return super.clone();
     }
 }
 

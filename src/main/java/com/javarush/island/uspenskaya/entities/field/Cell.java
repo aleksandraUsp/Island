@@ -1,6 +1,5 @@
 package com.javarush.island.uspenskaya.entities.field;
 
-import com.javarush.island.uspenskaya.entities.organizms.Animal;
 import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
 import java.util.*;
@@ -11,7 +10,8 @@ public class Cell  {
     private HashMap<Class<?>, HashSet<Organism>> herbivores;
     private HashMap<Class<?>, HashSet<Organism>> carnivores;  // <carnivore,quality>
     private HashSet<Plant> listOfPlant;
-    private volatile int qualityOfPlant;
+
+
     public Cell(int row, int column) {
         herbivores = new HashMap<>();
         carnivores = new HashMap<>();
@@ -46,12 +46,10 @@ public class Cell  {
     }
 
     public int getQualityOfPlant() {
-        return qualityOfPlant;
+        return listOfPlant.size();
     }
 
-    public void setQualityOfPlant(int qualityOfPlant) {
-        this.qualityOfPlant = qualityOfPlant;
-    }
+
 
     /*
         //TODO перенести в CellService
@@ -89,8 +87,15 @@ public class Cell  {
         }
 
     */
-    @Override
-    public String toString() {
-        return " | | ";
+
+    public String print(HashMap<Cell, HashMap<String, Integer>> mapForPrintOut) {
+        HashMap<String, Integer> leaders=mapForPrintOut.get(this);
+        ArrayList<String> out = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : leaders.entrySet()) {
+            String icon = entry.getKey();
+            Integer quality=entry.getValue();
+            out.add(icon+"="+quality);
+        }
+        return "|"+out.get(0)+";"+out.get(1)+";"+out.get(2)+"|";
     }
 }

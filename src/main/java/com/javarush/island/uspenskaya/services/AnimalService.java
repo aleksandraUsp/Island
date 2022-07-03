@@ -13,7 +13,7 @@ public class AnimalService implements AnimalActions {
     }
 
     @Override
-    public void initialize(Cell[][] field) {
+    public void initialize() {
 
     }
 

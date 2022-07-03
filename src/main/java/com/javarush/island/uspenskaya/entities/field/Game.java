@@ -1,81 +1,80 @@
 package com.javarush.island.uspenskaya.entities.field;
 
 import com.javarush.island.uspenskaya.exeption.IslandException;
-import com.javarush.island.uspenskaya.services.HerbivoreService;
-import com.javarush.island.uspenskaya.services.CarnivoreService;
-import com.javarush.island.uspenskaya.services.PlantService;
+
 import com.javarush.island.uspenskaya.thread.CarnivoreServiceTask;
 import com.javarush.island.uspenskaya.thread.HerbivoreServiceTask;
 import com.javarush.island.uspenskaya.thread.PlantServiceTask;
 import com.javarush.island.uspenskaya.util.Configger;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class Game {
-    private Day day;
-    private GameField gameField;
-    private final HerbivoreService herbivoreService;
-    private final CarnivoreService carnivoreService;
-    private final PlantService plantService;
-    private Viewer viewer;
-    private volatile boolean isCancel=false;
+    private final GameField gameField;
+    private final Day day;
+    private boolean isCanceled=false;
 
-    public Game() {
-        this.day=new Day();
-        this.gameField = new GameField(Configger.getRow(), Configger.getColumn());
-        gameField.initialize();
-        this.herbivoreService = new HerbivoreService(gameField.getField());
-        this.carnivoreService = new CarnivoreService(gameField.getField());
-        this.plantService = new PlantService(gameField.getField());
-        this.viewer = new Viewer(day,gameField.getField());
 
-        initializeGame();
-    }
+    //private volatile boolean isCancel = false;
 
-    public Day getDay() {
-        return day;
-    }
-
-    public void setDay(Day day) {
+    public Game(GameField gameField, Day day) {
         this.day = day;
-    }
-
-    public GameField getGameField() {
-        return gameField;
-    }
-
-    public void setGameField(GameField gameField) {
         this.gameField = gameField;
     }
 
-    public HerbivoreService getHerbivoreService() {
-        return herbivoreService;
-    }
-
-    public CarnivoreService getCarnivoreService() {
-        return carnivoreService;
-    }
-
-    public PlantService getPlantService() {
-        return plantService;
-    }
-
-    public void initializeGame(){
-        this.plantService.initialize(gameField.getField());
-        this.herbivoreService.initialize(gameField.getField());
-        this.carnivoreService.initialize(gameField.getField());
+    public void setCanceled(boolean canceled) {
+        isCanceled = canceled;
     }
 
     public void playGame() {
-        FutureTask<Integer> futurePlantService=new FutureTask<>(new PlantServiceTask(this, getPlantService()));
-        FutureTask<Integer> futureCarnivoreService=new FutureTask<>(new CarnivoreServiceTask(this, getCarnivoreService()));
-        FutureTask<Integer> futureHerbivoreService=new FutureTask<>(new HerbivoreServiceTask(this, getHerbivoreService()));
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
-        /*Queue<FutureTask<Integer>> queueTasks = new ConcurrentLinkedQueue<>();
-        queueTasks.add(futurePlantService);
-        queueTasks.add(futureCarnivoreService);
-        queueTasks.add(futureHerbivoreService);
-        for (FutureTask<Integer> task:queueTasks) {*/
+        Viewer viewer = new Viewer(day, gameField);
+        viewer.showStatistics();
+        viewer.showMap();
+        FutureTask<Integer> futurePlantService = new FutureTask<>(new PlantServiceTask(gameField));
+        FutureTask<Integer> futureCarnivoreService = new FutureTask<>(new CarnivoreServiceTask(gameField));
+        FutureTask<Integer> futureHerbivoreService = new FutureTask<>(new HerbivoreServiceTask(gameField));
+
+
+        ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(4);
+        List<FutureTask<Integer>> listTasks = new ArrayList<>();
+        listTasks.add(futurePlantService);
+        listTasks.add(futureCarnivoreService);
+        listTasks.add(futureHerbivoreService);
+
+        mainPool.scheduleAtFixedRate(() -> {
+                ExecutorService servicePool = Executors.newFixedThreadPool(4);
+                listTasks.forEach(servicePool::submit);
+
+                try {
+                    if (futurePlantService.get() == 1 && futureCarnivoreService.get() == 1 && futureHerbivoreService.get() == 1) {
+                        viewer.showStatistics();
+                        viewer.showMap();
+                    }
+                /*
+                FutureTask<String> futureViewer=new FutureTask<>(new Viewer(day, gameField));
+                Future resultViewer = executorService.schedule(futureViewer,4,TimeUnit.SECONDS);
+
+                servicePool.shutdown();
+            try {
+
+
+                if (servicePool.awaitTermination(Configger.getPeriod()/2, TimeUnit.MILLISECONDS)) {
+                    viewer.showStatistics();
+                    viewer.showMap();
+                }*/
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new IslandException(e);
+                }
+            }, Configger.getInitialDelay(), Configger.getPeriod(), TimeUnit.SECONDS);
+
+
+    }
+}
+/*
+        for (FutureTask<Integer> task:queueTasks) {
             //TODO - isCancel
             while(!isCancel) {
                 try {
@@ -85,8 +84,15 @@ public class Game {
                             (futureCarnivoreService, Configger.getInitialDelay(), Configger.getPeriod(), TimeUnit.SECONDS);
                     Future resultHerbivore = executorService.scheduleAtFixedRate
                             (futureHerbivoreService, Configger.getInitialDelay(), Configger.getPeriod(), TimeUnit.SECONDS);
-                    if ((Integer)resultPlant.get()==1 && (Integer)resultCarnivore.get()==1 && (Integer)resultHerbivore.get()==1)
-                        viewer.print(day);
+                    if ((Integer)resultPlant.get()==1 && (Integer)resultCarnivore.get()==1 && (Integer)resultHerbivore.get()==1) {
+
+                    FutureTask<String> futureViewer=new FutureTask<>(new Viewer(day, gameField));
+                    Future resultViewer = executorService.schedule(futureViewer,4,TimeUnit.SECONDS);
+
+                    executorService.shutdown();
+                    if (executorService.awaitTermination(Configger.getPeriod(), TimeUnit.SECONDS)) {
+                    Future resultViewer = executorService.schedule(futureViewer, Configger.getPeriod(), TimeUnit.SECONDS);}
+
                 } catch(InterruptedException|ExecutionException e){
                     throw new IslandException(e);
                 }
@@ -96,6 +102,7 @@ public class Game {
         }
 
         //executorService.awaitTermination(900,TimeUnit.MILLISECONDS);
+        */
 
 
 
@@ -104,5 +111,6 @@ public class Game {
 
 
 
-}
+
+
 

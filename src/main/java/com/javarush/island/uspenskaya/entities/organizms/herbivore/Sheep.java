@@ -1,5 +1,6 @@
 package com.javarush.island.uspenskaya.entities.organizms.herbivore;
 
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
 
 import java.util.Map;
@@ -57,6 +58,10 @@ public class Sheep extends Herbivore {
         ration.put(Caterpillar.class, 0); //гусеница
         ration.put(Plant.class, 100);
         return ration;
+    }
+    @Override
+    public Organism clone() {
+        return new Sheep(this.getMass(), this.getSpeed(), this.getMaxQuality(), this.getSaturation(), this.getIcon());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.javarush.island.uspenskaya.entities.organizms.carnivore;
 
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.util.Setting;
 
 import java.util.Map;
@@ -64,6 +65,12 @@ public class Eagle extends Carnivore {
         return super.getIcon();
     }
 
+    @Override
+    public Organism clone() {
+        return new Eagle(this.getMass(), this.getSpeed(), this.getMaxQuality(), this.getSaturation(), this.getIcon());
+    }
+
+    @Override
     public String toString() {
         return name + getIcon();
     }

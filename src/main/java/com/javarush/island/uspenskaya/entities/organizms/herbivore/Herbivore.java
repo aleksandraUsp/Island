@@ -1,6 +1,7 @@
 package com.javarush.island.uspenskaya.entities.organizms.herbivore;
 
 import com.javarush.island.uspenskaya.entities.organizms.Animal;
+import com.javarush.island.uspenskaya.entities.organizms.Organism;
 import com.javarush.island.uspenskaya.entities.organizms.Plant;
 
 import java.util.HashMap;
@@ -36,6 +37,11 @@ public abstract class Herbivore extends Animal {
     @Override
     public String getIcon() {
         return super.getIcon();
+    }
+
+    @Override
+    public Organism clone() {
+        return super.clone();
     }
 
     public Map<Class<?>, Integer> getRation() {
