@@ -86,7 +86,7 @@ public class HerbivoreService extends AnimalService {
                             double massOfAnimal = animal.getMass();
                             Map<Integer, Class<?>> rationThisTypeAnimal = animal.getProbabilityOfRation();
                             for (Map.Entry<Integer, Class<?>> entryProbability : rationThisTypeAnimal.entrySet()) {
-                                int probability = entryProbability.getKey();
+
                                 Class<?> clazzOfEat = entryProbability.getValue();
 
 
@@ -143,6 +143,7 @@ public class HerbivoreService extends AnimalService {
         super.move();
     }
 
+    @SuppressWarnings("Java8CollectionRemoveIf")
     public void dieHerbivores() {
         Cell cell;
         for (int i = field.length - 1; i >= 0; i--) {
@@ -179,11 +180,7 @@ public class HerbivoreService extends AnimalService {
 
                 synchronized (cell.getMonitor(i, j)) {
                     HashSet<Plant> setOfPlant = cell.getListOfPlant();
-                    Iterator<Plant> it = setOfPlant.iterator();
-                    while (it.hasNext()) {
-                        Plant plantMayBeDie = it.next();
-                        if (plantMayBeDie.getMass() == 0.0) it.remove();
-                    }
+                    setOfPlant.removeIf(plantMayBeDie -> plantMayBeDie.getMass() == 0.0);
                     cell.setListOfPlant(setOfPlant);
                 }
             }

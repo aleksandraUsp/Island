@@ -12,6 +12,7 @@ import ru.javarush.island.uspenskaya.util.Configger;
 import java.util.concurrent.*;
 
 public class GameWorker extends Thread {
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final Day day;
     private final GameField gameField;
     private final Viewer viewer;

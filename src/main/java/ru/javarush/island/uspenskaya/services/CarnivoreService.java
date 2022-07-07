@@ -2,12 +2,12 @@ package ru.javarush.island.uspenskaya.services;
 
 import ru.javarush.island.uspenskaya.entities.field.Cell;
 import ru.javarush.island.uspenskaya.entities.organizms.Animal;
-import ru.javarush.island.uspenskaya.entities.organizms.Organism;
 import ru.javarush.island.uspenskaya.repository.FactoryLife;
 import ru.javarush.island.uspenskaya.repository.TypesOfOrganisms;
 import ru.javarush.island.uspenskaya.util.Randomizer;
 
 import java.util.*;
+
 
 
 public class CarnivoreService extends AnimalService {
@@ -22,14 +22,14 @@ public class CarnivoreService extends AnimalService {
         Cell cell;
         HashSet<Class<?>> carnivoresTypes = TypesOfOrganisms.getTypesOfCarnivores();
 
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
-                cell = field[i][j];
-                HashMap<Class<?>, HashSet<Animal>> carnivores=new HashMap<>();
-                        for(Class<?> typeOfCarnivores:carnivoresTypes){
-                            HashSet<Animal> listOfCarnivoresThisType= FactoryLife.factoryOrganism(typeOfCarnivores);
-                            carnivores.put(typeOfCarnivores,listOfCarnivoresThisType);
-                        }
+        for (Cell[] cells : field) {
+            for (int j = 0; j < cells.length; j++) {
+                cell = cells[j];
+                HashMap<Class<?>, HashSet<Animal>> carnivores = new HashMap<>();
+                for (Class<?> typeOfCarnivores : carnivoresTypes) {
+                    HashSet<Animal> listOfCarnivoresThisType = FactoryLife.factoryOrganism(typeOfCarnivores);
+                    carnivores.put(typeOfCarnivores, listOfCarnivoresThisType);
+                }
                 cell.setCarnivores(carnivores);
             }
         }

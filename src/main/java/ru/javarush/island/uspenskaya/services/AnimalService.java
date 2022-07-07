@@ -2,11 +2,8 @@ package ru.javarush.island.uspenskaya.services;
 
 
 import ru.javarush.island.uspenskaya.entities.field.Cell;
-import ru.javarush.island.uspenskaya.entities.organizms.Organism;
 import ru.javarush.island.uspenskaya.interfaces.organismactions.AnimalActions;
 
-import java.util.HashSet;
-import java.util.Map;
 
 public class AnimalService implements AnimalActions {
     public AnimalService() {
@@ -18,6 +15,8 @@ public class AnimalService implements AnimalActions {
 
     }
 
+
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void reproduct(Cell[][] field) {
 

@@ -53,44 +53,6 @@ public class Cell  {
     }
 
 
-
-    /*
-        //TODO перенести в CellService
-        public void calculate() {
-            for (Map.Entry<String, List<Herbivore>> entry : carnivores.entrySet()) {
-                String carnivoreType = entry.getKey();
-                int qualityCarnivoreThisType = entry.getValue();
-                for (int i = 0; i < qualityCarnivoreThisType; i++) {
-                    herbivores = carnivore.eat(herbivores); // вернули оставшихся травоядных
-                }
-                //TODO добавить поедание других хищников и возврат мэпы хищников
-                //TODO добавить проверку на кол-во умерших или в .eat()
-                qualityCarnivoreThisType = carnivore.multyply(qualityCarnivoreThisType); //вернули кол-во хищников этого типа
-                entry.setValue(qualityCarnivoreThisType); //вернули увеличенное кол-во хищников
-
-                for (int i = 0; i < qualityCarnivoreThisType; i++) {
-                    carnivore.move();
-                }
-            }
-
-            for (Map.Entry<Herbivore, Integer> entry : herbivores.entrySet()) {
-                Herbivore herbivore = entry.getKey();
-                int qualityHerbivoreThisType = entry.getValue();
-                for (int i = 0; i < qualityHerbivoreThisType; i++) {
-                    qualityOfPlant = herbivore.eat(qualityOfPlant);
-                    //TODO добавить поедание других травоядных и возврат мэпы травояд.
-                    //TODO добавить проверку на кол-во умерших или в .eat()
-                    qualityHerbivoreThisType = herbivore.multyply(qualityHerbivoreThisType);
-                    entry.setValue(qualityHerbivoreThisType);
-                }
-                for (int i = 0; i < qualityHerbivoreThisType; i++) {
-                    herbivore.move();
-                }
-            }
-        }
-
-    */
-
     public String print(HashMap<Cell, HashMap<String, Integer>> mapForPrintOut) {
         HashMap<String, Integer> leaders=mapForPrintOut.get(this);
         ArrayList<String> out = new ArrayList<>();

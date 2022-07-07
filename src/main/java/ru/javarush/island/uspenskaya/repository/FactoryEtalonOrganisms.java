@@ -42,6 +42,7 @@ public class FactoryEtalonOrganisms {
         return etalonOrganisms;
     }
 
+    @SuppressWarnings("unused")
     public static Map<Class<?>, Animal> createPrototypesMapAnimal(HashSet<Class<?>> setOfOrganisms) { //HashSet<Class<?>> TypesOfOrganisms.getTypesOfOrganisms()
         HashMap<Class<?>, Animal> etalonOrganisms = new HashMap<>();//Organism[] organisms = new Organism[setOfOrganisms.size()];
         for (Class<?> type : setOfOrganisms) {

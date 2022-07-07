@@ -1,7 +1,6 @@
 package ru.javarush.island.uspenskaya.repository;
 
 import ru.javarush.island.uspenskaya.entities.organizms.Animal;
-import ru.javarush.island.uspenskaya.entities.organizms.Organism;
 import ru.javarush.island.uspenskaya.exeption.IslandException;
 import ru.javarush.island.uspenskaya.util.Randomizer;
 import ru.javarush.island.uspenskaya.util.Setting;

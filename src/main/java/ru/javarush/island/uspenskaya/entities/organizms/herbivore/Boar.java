@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setting(mass=400, speed= 2,maxQuality=50,saturation=50, icon="\uD83D\uDC17")
 public class Boar extends Herbivore {
     private final String name;
+    @SuppressWarnings("FieldCanBeLocal")
     private final AtomicInteger number=new AtomicInteger(1);
     private final TreeMap<Integer,Class<?>> probabilityOfRation= new TreeMap();
 

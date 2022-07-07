@@ -1,11 +1,9 @@
 package ru.javarush.island.uspenskaya.entities.field;
 
 import ru.javarush.island.uspenskaya.entities.organizms.Animal;
-import ru.javarush.island.uspenskaya.entities.organizms.Organism;
+import ru.javarush.island.uspenskaya.util.Randomizer;
 import ru.javarush.island.uspenskaya.interfaces.simpleinterface.Viewable;
 import ru.javarush.island.uspenskaya.repository.TypesOfOrganisms;
-import ru.javarush.island.uspenskaya.util.Configger;
-
 
 import java.util.*;
 
@@ -13,7 +11,7 @@ import java.util.*;
 public class Viewer implements Viewable {
     private final Day day;
     private final GameField gameField;
-    private final int cellWidth = Configger.getConsoleCellWith();
+
 
     public Viewer(Day day, GameField gameField) {
         this.day = day;
@@ -88,28 +86,17 @@ public class Viewer implements Viewable {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 Cell cell = cells[i][j];
+                int quality;
                 HashMap<String, Integer> dataOneCell = new HashMap<>();
-                double tempPercentMaxQuality = 0;
-                String icon = null;
-                int quality = 0;
-                String type;
+
                 HashMap<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
-                for (Map.Entry<Class<?>, HashSet<Animal>> entry : herbivores.entrySet()) {
-                    Class<?> typeOfHerbivores = entry.getKey();
-                    HashSet<Animal> listOfHerbivoresThisType = entry.getValue();
-                    int maxQualityOnCellThisType = TypesOfOrganisms.valueOf(typeOfHerbivores
-                                    .getSimpleName()
-                                    .toUpperCase(Locale.ROOT))
-                            .getMaxQuality();
-                    type = typeOfHerbivores.getSimpleName().toUpperCase(Locale.ROOT);
-                    int qualityOfAnimal = listOfHerbivoresThisType.size();
-                    double percentOfQualityOfAnimal = qualityOfAnimal / maxQualityOnCellThisType;
-                    if (percentOfQualityOfAnimal >= tempPercentMaxQuality) {
-                        tempPercentMaxQuality = percentOfQualityOfAnimal;
-                        quality = qualityOfAnimal;
-                        icon = TypesOfOrganisms.valueOf(type).getIcon();
-                    }
-                }
+                HashSet<Class<?>> classesOfHerbivores=TypesOfOrganisms.getTypesOfHerbivores();
+
+                int numberOfRandomClass = Randomizer.getRnd(0,classesOfHerbivores.size()-1);
+                Class<?> randomClass =(Class<?>)classesOfHerbivores.toArray()[numberOfRandomClass];
+                String typeRandomClass = randomClass.getSimpleName().toUpperCase(Locale.ROOT);
+                String icon = TypesOfOrganisms.valueOf(typeRandomClass).getIcon();
+                quality = herbivores.get(randomClass).size();
                 dataOneCell.put(icon, quality);
                 forPrint.put(cell, dataOneCell);
             }
