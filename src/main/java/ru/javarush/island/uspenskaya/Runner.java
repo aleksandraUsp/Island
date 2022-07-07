@@ -12,7 +12,7 @@ public class Runner {
         Day day = new Day();
         GameField gameField = new GameField(Configger.getRow(), Configger.getColumn());
         GameWorker gameWorker = new GameWorker(gameField, day);
-        gameWorker.playGame();
+        gameWorker.start();
 
     }
 }

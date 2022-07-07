@@ -7,7 +7,7 @@ public class Configger {
     private static double  valueOfMassForDeath = 0.5; // коэф.снижения массы тела, при кот. животные умирают
     private static int row=10;
     private static int column=10;
-    private static long initialDelay=2;
+    private static long initialDelay=0;
     private static long period=5;
     private final static int consoleCellWith = 3;
 
