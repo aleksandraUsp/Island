@@ -9,27 +9,19 @@ import ru.javarush.island.uspenskaya.thread.CarnivoreServiceTask;
 import ru.javarush.island.uspenskaya.thread.HerbivoreServiceTask;
 import ru.javarush.island.uspenskaya.thread.PlantServiceTask;
 import ru.javarush.island.uspenskaya.util.Configger;
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.*;
 
 public class GameWorker extends Thread {
-    private final GameField gameField;
     private final Day day;
-    private boolean isCanceled = false;
-    Viewer viewer;
+    private final GameField gameField;
+    private final Viewer viewer;
 
 
     public GameWorker(GameField gameField, Day day) {
-        this.day = day;
+        this.day=day;
         this.gameField = gameField;
         this.viewer = new Viewer(day, gameField);
 
-    }
-
-    public void setCanceled(boolean canceled) {
-        isCanceled = canceled;
     }
 
     @Override
@@ -38,13 +30,12 @@ public class GameWorker extends Thread {
         viewer.showMap();
 
 
-        ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(4);
+        ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(1);
         mainPool.scheduleAtFixedRate(() -> {
 
             try {
                 boolean isGood = emulation();
 
-                //if (servicePool.awaitTermination(Configger.getPeriod(), TimeUnit.MILLISECONDS)) {
                 if (isGood) {
                     viewer.showStatistics();
                     viewer.showMap();
@@ -56,21 +47,22 @@ public class GameWorker extends Thread {
         }, Configger.getInitialDelay(), Configger.getPeriod(), TimeUnit.SECONDS);
     }
 
-
-
-
-
     public boolean emulation() throws InterruptedException, ExecutionException {
         FutureTask<Integer> futurePlantService = new FutureTask<>(new PlantServiceTask(gameField));
         FutureTask<Integer> futureCarnivoreService = new FutureTask<>(new CarnivoreServiceTask(gameField));
         FutureTask<Integer> futureHerbivoreService = new FutureTask<>(new HerbivoreServiceTask(gameField));
-        new Thread(futurePlantService).start();
-        new Thread(futureHerbivoreService).start();
-        new Thread(futureCarnivoreService).start();
+        ExecutorService servicePool = Executors.newFixedThreadPool(3);
+        servicePool.submit(futurePlantService);
+        servicePool.submit(futureHerbivoreService);
+        servicePool.submit(futureCarnivoreService);
+
 
         Integer resultPlantService = futurePlantService.get();
         Integer resultHerbivoreService = futurePlantService.get();
         Integer resultCarnivoreService = futurePlantService.get();
+
+        servicePool.shutdown();
+
         if (resultPlantService == 1 && resultHerbivoreService == 1 && resultCarnivoreService == 1)
             return true;
         else
@@ -84,22 +76,6 @@ public class GameWorker extends Thread {
     }
 }
 
-/*    ExecutorService servicePool = Executors.newFixedThreadPool(3);
-//QueueTasks.deque.forEach(servicePool::submit);
-            listTasks.forEach(servicePool::submit);
-                    servicePool.shutdown();
-
-        /*while(!isCanceled) {
-            QueueTasks.deque.add(futurePlantService);
-            QueueTasks.deque.add(futureCarnivoreService);
-            QueueTasks.deque.add(futureHerbivoreService);
-            Sleeper.sleep(500);
-
-        List<FutureTask<Integer>> listTasks = new LinkedList<>();
-            listTasks.add(futurePlantService);
-            listTasks.add(futureCarnivoreService);
-            listTasks.add(futureHerbivoreService);
-*/
 
 
 
@@ -110,7 +86,8 @@ public class GameWorker extends Thread {
 
 
 
-// (futurePlantService.get() == 1 && futureCarnivoreService.get() == 1 && futureHerbivoreService.get() == 1)
+
+
 
 
 
