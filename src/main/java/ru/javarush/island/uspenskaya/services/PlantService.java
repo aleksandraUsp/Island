@@ -42,7 +42,7 @@ public class PlantService extends OrganismService {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 cell = field[i][j];
-                synchronized (cell.getMonitor(i, j)) {
+                synchronized (cell.getMonitor()) {
                     HashSet<Plant> listOfPlant = cell.getListOfPlant();
                     qualityOfPlant = cell.getQualityOfPlant();
                     bandOfPlant = TypesOfOrganisms.PLANT.getMaxQuality() - qualityOfPlant;

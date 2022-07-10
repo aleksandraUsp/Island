@@ -21,7 +21,7 @@ public class Cell  {
         this.column=column;
     }
 
-    public Cell getMonitor(int row, int column){
+    public Cell getMonitor(){
         return this;
     }
     public HashMap<Class<?>, HashSet<Animal>> getHerbivores() {

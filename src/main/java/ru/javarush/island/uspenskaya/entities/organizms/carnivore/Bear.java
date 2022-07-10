@@ -4,14 +4,14 @@ import ru.javarush.island.uspenskaya.entities.organizms.Organism;
 import ru.javarush.island.uspenskaya.entities.organizms.herbivore.*;
 import ru.javarush.island.uspenskaya.util.Setting;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Setting(mass=500, speed= 2,maxQuality=5,saturation=80, icon="\uD83D\uDC3B")
-public class Bear extends Carnivore {
+public class Bear extends Carnivore  {
     private final AtomicInteger number=new AtomicInteger(1);
-    private final Map<Class<?>, Integer> ration = new HashMap<>();
+    private final Map<Class<?>, Integer> ration = new TreeMap<>();
     private final String name;
 
     public Bear(double mass, int speed, int maxQuality, double saturation, String icon) {
@@ -37,6 +37,8 @@ public class Bear extends Carnivore {
         ration.put(Caterpillar.class, 0); //гусеница
         return ration;
     }
+
+
 
     public String getName() {
         return name;
@@ -76,6 +78,7 @@ public class Bear extends Carnivore {
     public String getIcon() {
         return super.getIcon();
     }
+
 
     @Override
     public Organism clone() {

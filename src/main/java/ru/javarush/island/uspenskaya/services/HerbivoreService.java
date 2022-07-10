@@ -44,7 +44,7 @@ public class HerbivoreService extends AnimalService {
         for (int i = field.length-1; i >= 0; i--) {
             for (int j = field[i].length-1; j >= 0; j--) {
                 cell = field[i][j];
-                synchronized (cell.getMonitor(i, j)) {
+                synchronized (cell.getMonitor()) {
                     Map<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
                     for (Map.Entry<Class<?>, HashSet<Animal>> entry : herbivores.entrySet()) {
                         Class<?> typeOfHerbivores = entry.getKey();
@@ -72,7 +72,7 @@ public class HerbivoreService extends AnimalService {
             for (int j = field[i].length-1; j >= 0; j--) {
                 cell = field[i][j];
 
-                synchronized (cell.getMonitor(i, j)) {
+                synchronized (cell.getMonitor()) {
                     HashMap<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
                     for (Map.Entry<Class<?>, HashSet<Animal>> entry : herbivores.entrySet()) {
                         Class<?> classOfHerbivores = entry.getKey();
@@ -88,7 +88,6 @@ public class HerbivoreService extends AnimalService {
                             for (Map.Entry<Integer, Class<?>> entryProbability : rationThisTypeAnimal.entrySet()) {
 
                                 Class<?> clazzOfEat = entryProbability.getValue();
-
 
                                 double tempSaturation = 0;
 
@@ -129,11 +128,12 @@ public class HerbivoreService extends AnimalService {
                         }
                     }
                     cell.setHerbivores(herbivores);
+                    dieHerbivores(cell);
                 }
 
             }
         }
-        dieHerbivores();
+
         diePlant();
     }
 
@@ -143,33 +143,27 @@ public class HerbivoreService extends AnimalService {
         super.move();
     }
 
-    @SuppressWarnings("Java8CollectionRemoveIf")
-    public void dieHerbivores() {
-        Cell cell;
-        for (int i = field.length - 1; i >= 0; i--) {
-            for (int j = field[i].length - 1; j >= 0; j--) {
-                cell = field[i][j];
 
-                synchronized (cell.getMonitor(i, j)) {
-                    HashMap<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
-                    for (Map.Entry<Class<?>, HashSet<Animal>> entryHerbivoresMayBeDie : herbivores.entrySet()) {
-                        HashSet<Animal> setOfHerbivoresMayBeDie = entryHerbivoresMayBeDie.getValue();
-                        Class<?> classOfHerbivores = entryHerbivoresMayBeDie.getKey();
-                        TypesOfOrganisms type = TypesOfOrganisms.valueOf(classOfHerbivores
-                                .getSimpleName()
-                                .toUpperCase(Locale.ROOT));
-                        Iterator<Animal> it = setOfHerbivoresMayBeDie.iterator();
-                        while (it.hasNext()) {
-                            Animal animalMayBeDie = it.next();
-                            if (animalMayBeDie.getMass() <= type.getMaxMass() * Configger.getValueOfMassForDeath())
-                                it.remove();
-                        }
-                    }
-                    cell.setHerbivores(herbivores);
+    public static void dieHerbivores(Cell cell) {
+        synchronized (cell.getMonitor()) {
+            HashMap<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
+            for (Map.Entry<Class<?>, HashSet<Animal>> entryHerbivoresMayBeDie : herbivores.entrySet()) {
+                HashSet<Animal> setOfHerbivoresMayBeDie = entryHerbivoresMayBeDie.getValue();
+                Class<?> classOfHerbivores = entryHerbivoresMayBeDie.getKey();
+                TypesOfOrganisms type = TypesOfOrganisms.valueOf(classOfHerbivores
+                        .getSimpleName()
+                        .toUpperCase(Locale.ROOT));
+                Iterator<Animal> it = setOfHerbivoresMayBeDie.iterator();
+                while (it.hasNext()) {
+                    Animal animalMayBeDie = it.next();
+                    if (animalMayBeDie.getMass() <= type.getMaxMass() * Configger.getValueOfMassForDeath())
+                        it.remove();
                 }
             }
+            cell.setHerbivores(herbivores);
         }
     }
+
 
 
     public void diePlant() {
@@ -178,7 +172,7 @@ public class HerbivoreService extends AnimalService {
             for (int j = field[i].length-1; j >= 0; j--) {
                 cell = field[i][j];
 
-                synchronized (cell.getMonitor(i, j)) {
+                synchronized (cell.getMonitor()) {
                     HashSet<Plant> setOfPlant = cell.getListOfPlant();
                     setOfPlant.removeIf(plantMayBeDie -> plantMayBeDie.getMass() == 0.0);
                     cell.setListOfPlant(setOfPlant);
