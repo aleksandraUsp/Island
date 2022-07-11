@@ -97,8 +97,8 @@ public class CarnivoreService extends AnimalService {
 
     private void eatThisTypeCarnivores(Cell cell, Class<?> classOfCarnivores,
                                        HashSet<Animal> listOfCarnivoresThisType) {
-        HashMap<Class<?>, HashSet<Animal>> herbivores=cell.getHerbivores();
-        HashMap<Class<?>, HashSet<Animal>> carnivores=cell.getCarnivores();
+        HashMap<Class<?>, HashSet<Animal>> herbivores = cell.getHerbivores();
+        HashMap<Class<?>, HashSet<Animal>> carnivores = cell.getCarnivores();
 
         for (Animal animal : listOfCarnivoresThisType) {
             TypesOfOrganisms type = TypesOfOrganisms.valueOf(classOfCarnivores
@@ -108,53 +108,57 @@ public class CarnivoreService extends AnimalService {
             Map<Class<?>, Integer> rationThisTypeAnimal = animal.getRation();
             Comparator<Map.Entry<Class<?>, Integer>> rationComparator =
                     (o1, o2) -> o1.getValue() - o2.getValue();
-            TreeSet<Map.Entry<Class<?>, Integer>> sortedRationSet= new TreeSet<>(rationComparator);
+            TreeSet<Map.Entry<Class<?>, Integer>> sortedRationSet = new TreeSet<>(rationComparator);
             sortedRationSet.addAll(rationThisTypeAnimal.entrySet());
-            for (Map.Entry<Class<?>, Integer> entryProbability:sortedRationSet) {
-                Class<?> clazzOfEat = entryProbability.getKey();
-               //Integer probability = entryProbability.getValue();
-                double tempSaturation = 0;
+            for (Map.Entry<Class<?>, Integer> entryProbability : sortedRationSet) {
+                Integer probability = entryProbability.getValue();
+                if (probability > 0) {
+                    Class<?> clazzOfEat = entryProbability.getKey();
+
+                    double tempSaturation = 0;
 
 
-                if (clazzOfEat.getSuperclass().isInstance(Herbivore.class)) {
-                    HashSet<Animal> setOfAnimalToEat = herbivores.get(clazzOfEat);
-                    if (setOfAnimalToEat.size() > 0) {
-                        for (Animal animalForEating : setOfAnimalToEat) {
-                            double massOfAnimalForEating = animalForEating.getMass();
-                            if (massOfAnimalForEating < animal.getSaturation() &&
-                                    massOfAnimalForEating + massOfAnimal < type.getMaxMass()) {
-                                massOfAnimal = massOfAnimal + massOfAnimalForEating;
-                                tempSaturation = tempSaturation + massOfAnimalForEating;
-                                animalForEating.setMass(0.0);
+                    if (clazzOfEat.getSuperclass().isInstance(Herbivore.class)) {
+                        HashSet<Animal> setOfAnimalToEat = herbivores.get(clazzOfEat);
+                        if (setOfAnimalToEat.size() > 0) {
+                            for (Animal animalForEating : setOfAnimalToEat) {
+                                double massOfAnimalForEating = animalForEating.getMass();
+                                if (massOfAnimalForEating < animal.getSaturation() &&
+                                        massOfAnimalForEating + massOfAnimal < type.getMaxMass()) {
+                                    massOfAnimal = massOfAnimal + massOfAnimalForEating;
+                                    tempSaturation = tempSaturation + massOfAnimalForEating;
+                                    animalForEating.setMass(0.0);
+                                }
                             }
                         }
                     }
-                }
 
-                if (clazzOfEat.getSuperclass().isInstance(Carnivore.class)) {
-                    HashSet<Animal> setOfAnimalToEat = carnivores.get(clazzOfEat);
-                    if (setOfAnimalToEat.size() > 0) {
-                        for (Animal animalForEating : setOfAnimalToEat) {
-                            double massOfAnimalForEating = animalForEating.getMass();
-                            if (massOfAnimalForEating < animal.getSaturation() &&
-                                    massOfAnimalForEating + massOfAnimal < type.getMaxMass()) {
-                                massOfAnimal = massOfAnimal + massOfAnimalForEating;
-                                tempSaturation = tempSaturation + massOfAnimalForEating;
-                                animalForEating.setMass(0.0);
+                    if (clazzOfEat.getSuperclass().isInstance(Carnivore.class)) {
+                        HashSet<Animal> setOfAnimalToEat = carnivores.get(clazzOfEat);
+                        if (setOfAnimalToEat.size() > 0) {
+                            for (Animal animalForEating : setOfAnimalToEat) {
+                                double massOfAnimalForEating = animalForEating.getMass();
+                                if (massOfAnimalForEating < animal.getSaturation() &&
+                                        massOfAnimalForEating + massOfAnimal < type.getMaxMass()) {
+                                    massOfAnimal = massOfAnimal + massOfAnimalForEating;
+                                    tempSaturation = tempSaturation + massOfAnimalForEating;
+                                    animalForEating.setMass(0.0);
+                                }
                             }
                         }
                     }
+                    if (tempSaturation == animal.getSaturation() || massOfAnimal == type.getMaxMass()) {
+                        cell.setHerbivores(herbivores);
+                        break;
+                    }
                 }
-                if (tempSaturation == animal.getSaturation() || massOfAnimal == type.getMaxMass())   {
-                    cell.setHerbivores(herbivores);
-                break;}
-                            }
-                            animal.setMass(massOfAnimal);
-                }
+                animal.setMass(massOfAnimal-animal.getSaturation());
+            }
+        }
         cell.setCarnivores(carnivores);
         HerbivoreService.dieHerbivores(cell);
         dieCarnivores(cell);
-        }
+    }
 
 
     public static void dieCarnivores(Cell cell) {

@@ -124,7 +124,7 @@ public class HerbivoreService extends AnimalService {
                                 if (tempSaturation == animal.getSaturation() || massOfAnimal == type.getMaxMass())
                                     break;
                             }
-                            animal.setMass(massOfAnimal);
+                            animal.setMass(massOfAnimal-animal.getSaturation());
                         }
                     }
                     cell.setHerbivores(herbivores);
